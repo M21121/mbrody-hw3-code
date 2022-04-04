@@ -9,7 +9,6 @@ using namespace std;
 struct EdgeNode {
 	int y;
 	int weight;
-	string name;
 	struct EdgeNode* next;
 };
 
@@ -18,6 +17,7 @@ class Graph {
 private:
 	static const int MAXV = 20;
 	EdgeNode* edges[MAXV + 1] = {};
+	string name[20] = {};
 
 public:
 
@@ -35,7 +35,7 @@ public:
 	 */
 	void name(int i, string name) 
 	{
-		edges[i]->name = name;
+		this->name[i] = name;
 	}
 
 	/**
@@ -43,12 +43,22 @@ public:
 	 */
 	void link(int i, int j, int d) 
 	{
-		auto temp = edges[i];
+		//Makes Sure edges[i] isn't nullptr
+		if (edges[i] == nullptr)
+		{
+			edges[i] = new EdgeNode;
+		}
+
+		//Creates a temp pointer to edges[i]
+		EdgeNode* temp = edges[i];
+
+		//Finds last edge in line
 		while (edges[i]->next != nullptr)
 		{
 			temp = temp->next;
 		}
-
+		
+		//Adds new edge to line
 		EdgeNode* newEdgeNode = new EdgeNode();
 		newEdgeNode->weight = d;
 		newEdgeNode->next = nullptr;
@@ -61,13 +71,27 @@ public:
 	 */
 	void deleteEdge(int i, int j) 
 	{
-		auto temp = edges[i];
-		while (edges[i]->next != edges[j])
+		auto tmp = edges[i];
+
+		// case 1: first edge in the list
+		if (tmp->y == j)
 		{
-			temp = temp->next;
+			edges[i] = tmp->next;
+			delete tmp;
 		}
-		temp->next = temp->next->next;
-		delete temp->next;
+		// case 2: edge is somewhere else in the list
+		auto tmp2 = tmp;
+		while (tmp != nullptr)
+		{
+			if (tmp->y == j)
+			{
+				tmp2->next = tmp->next;
+				delete tmp;
+				break;
+			}
+			tmp2 = tmp;
+			tmp = tmp->next;
+		}
 	}
 
 
@@ -77,7 +101,7 @@ public:
 	 */
 	void dump() 
 	{
-		auto temp = edges[0];
+		EdgeNode* temp = edges[0];
 		for (EdgeNode* e : edges)
 		{
 			temp = e;
@@ -95,7 +119,57 @@ public:
 	 */
 	void path(int s, int g) 
 	{
-		
+			int i;					/* counter */
+			EdgeNode* p;			/* temporary pointer */
+			bool intree[MAXV + 1];	/* is the vertex in the tree yet? */
+			int distance[MAXV + 1];	/* cost of adding to tree */
+			int v; 					/* current vertex to process */
+			int w;					/* candidate next vertex */
+			int dist;				/* cheapest cost to enlarge tree */
+			int weight = 0;			/* tree weight */
+
+			for (i = 1; i <= 20; i++)
+			{
+				intree[i] = false;
+				distance[i] = INT_MAX;
+				parent[i] = -1;
+			}
+
+			distance[s] = 0;
+			v = i;
+			while (!intree[v]) 
+			{
+				intree[v] = true;
+				if (v != i) 
+{				{
+					printf("edge (%d,%d) in tree \n"
+						 ,parent[v],v);
+					weight=weight+dist;
+				}
+				p = edges[v];
+				while (p != NULL) 
+				{
+					w = p->y;
+					if (distance[w] > (distance[v] + p->weight)) 
+					{
+						distance[w] = distance[v] + p -> weight;
+						parent[w] = v;
+					}
+					p = p->next;
+				}
+				/* CHANGED *//* CHANGED *//* CHANGED */
+				dist = INT_MAX;
+				for (i = 1; i <= 20; i++) 
+				{
+					if ((!intree[i]) && (dist > distance[i]))
+					{
+						dist = distance[i];
+						v = i;
+					}
+				}
+			}
+				//PRINT STATEMENT HERE??
+		}
 	}
 	
 	/**
@@ -103,6 +177,7 @@ public:
 	 */
 	void dend() 
 	{
+		cout << "Dead ends: " << endl;
 		for (EdgeNode* e : edges)
 		{
 			if (e->next == nullptr)
