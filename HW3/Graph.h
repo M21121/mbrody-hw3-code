@@ -43,17 +43,19 @@ public:
 	 */
 	void link(int i, int j, int d) 
 	{
+		bool nulled = false;
 		//Makes Sure edges[i] isn't nullptr
 		if (edges[i] == nullptr)
 		{
 			edges[i] = new EdgeNode;
+			nulled = true;
 		}
 
 		//Creates a temp pointer to edges[i]
 		EdgeNode* temp = edges[i];
 
 		//Finds last edge in line
-		while (edges[i]->next != nullptr)
+		while (temp->next != nullptr)
 		{
 			temp = temp->next;
 		}
@@ -63,7 +65,14 @@ public:
 		newEdgeNode->weight = d;
 		newEdgeNode->next = nullptr;
 		newEdgeNode->y = j;
-		temp->next = newEdgeNode;
+		if (nulled)
+		{
+			temp = newEdgeNode;
+		}
+		else
+		{
+			temp->next = newEdgeNode;
+		}
 	}
 
 	/**
@@ -127,6 +136,8 @@ public:
 			int w;					/* candidate next vertex */
 			int dist;				/* cheapest cost to enlarge tree */
 			int weight = 0;			/* tree weight */
+			int parent[20] = {};	/* parent array */
+
 
 			for (i = 1; i <= 20; i++)
 			{
