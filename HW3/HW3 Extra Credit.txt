@@ -1,0 +1,6 @@
+ Unit testing is the process of testing small pieces or groups of pieces (Methods, classes, etc.) 
+ of code seperately. It makes sure each piece works well on its own. Test driven development is 
+ where a specific test is made to check each piece (method, class, option, corner case) of code
+ before the code is written. If a program passes all the tests, it is almost guaranteed that the
+ program will work as expected. However, if the tests are not written with good forthought it can 
+ confine the developer into writing sloppy and inefficient code.

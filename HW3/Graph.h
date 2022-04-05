@@ -23,6 +23,10 @@ public:
 
 	Graph() 
 	{
+		for (int i = 0; i < 20; i++)
+		{
+			name[i] = i;
+		}
 	}
 
 	/**
@@ -110,13 +114,14 @@ public:
 	 */
 	void dump() 
 	{
-		EdgeNode* temp = edges[0];
-		for (EdgeNode* e : edges)
+		EdgeNode* temp;
+		for (int i = 0; i < 20; ++i)
 		{
-			temp = e;
+			temp = edges[i];
+			//Print all edges coming from e
 			while (temp != nullptr)
 			{
-				cout << temp->y << "->";
+				cout << name[i] << "->" << name[temp->y] << " " << temp->weight << endl;
 				temp = temp->next;
 			}
 			cout << endl;
@@ -179,7 +184,7 @@ public:
 					}
 				}
 			}
-				//PRINT STATEMENT HERE??
+				cout << "Weight: " << distance[g] << endl;
 		}
 	}
 	
